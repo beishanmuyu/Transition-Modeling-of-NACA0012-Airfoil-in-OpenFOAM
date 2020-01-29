@@ -1,0 +1,75 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  1.7.0                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     simpleFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         1500;
+
+deltaT          0.5;
+
+writeControl    timeStep;
+
+writeInterval   300;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+libs ("libmyIncompressibleRASModels.so");
+
+functions
+{
+    forces
+    {
+        type        forceCoeffs;
+        functionObjectLibs ( "libforces.so" );
+        outputControl timeStep;
+        outputInterval 1;
+        patches
+        (
+            wing
+        );
+        pName       p;
+        UName       U;
+	rhoName	    rhoInf;
+        log         true;
+        rhoInf      1;
+        CofR        ( 0 0 0 );
+        liftDir     ( 0.087 0.996 0 );
+        dragDir     ( -0.996 0.087 0 );
+        pitchAxis   ( 0 0 1 );
+        magUInf     75.00;
+        lRef        1;
+        Aref        1;
+    }
+}
+// ************************************************************************* //
